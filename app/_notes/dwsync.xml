@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name=".htaccess" server="D:/Programming/WampServer/www/TestServer/" local="132386482523238791" remote="132386482520000000" Dst="0" />
+<file name="AppService.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523258757" remote="132386482520000000" Dst="0" />
+<file name="BaseController.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523268748" remote="132386482520000000" Dst="0" />
+<file name="common.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523308732" remote="132386482520000000" Dst="0" />
+<file name="event.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523348722" remote="132386482520000000" Dst="0" />
+<file name="ExceptionHandle.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523288736" remote="132386482520000000" Dst="0" />
+<file name="middleware.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523358702" remote="132386482520000000" Dst="0" />
+<file name="provider.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523368695" remote="132386482520000000" Dst="0" />
+<file name="Request.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523298733" remote="132386482520000000" Dst="0" />
+<file name="service.php" server="D:/Programming/WampServer/www/TestServer/" local="132386482523378687" remote="132386482520000000" Dst="0" />
+</dwsync>

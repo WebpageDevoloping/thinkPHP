@@ -75,39 +75,191 @@ class Index extends BaseController
 	
 	public function insert()
 	{
+		//insert()数据新增
+		$data=[
+			'user_account' => '123459',
+			'user_name'	   => 'wonderful5',
+			'user_password'=> '1951681585',
+			'user_sex'     => '女',
+			'create_time'  => '2020-09-11 00:00:44',
+			'user_status' => '2',
+			'suer_id'	  => '5',
+			
+		];
+		//单条新增
+		$query=Db::connect('mysql')->name('account');
+		/*$result=$query->insert($data);
+		dump($result); */
+		//strict(false)抛弃数据表不纯在字段
+		//$query->removeOption(where)->select();
+		//$result=$query->strict(false)->insert($data);
+		
+		return $query->strict(false)->insertGetId($data);
+		
 		
 	}
-    public function hello()
-    {
-        //$data=Db::connect('test1')->table('test2')->select();
-		//$data1=Db::connect('test')->table('test1')->select();
-		/*$data=Db::connect('test1')->name('test2')->cursor();
-			foreach($data as $data){
-				dump($data);
-				echo 1;
-			}
-			return Db::connect('test1')->getLastSql();
-		    */
-		
-		//$data=Db::connect('test')->name('test1')->where('id',1)->value('user_name');
-		
+	
+	public function insertAll()
+	{
+		$data=[
+			[
+				'user_account' => '123459',
+				'user_name'	   => 'wonderful5',
+				'user_password'=> '1951681585',
+				'user_sex'     => '女',
+				'create_time'  => '2020-09-11 00:00:44',
+				'user_status' => '2',
+				'suer_id'	  => '5',
+			],
+			[
+				'user_account' => '55555',
+				'user_name'	   => 'wonderful5',
+				'user_password'=> '1951681585',
+				'user_sex'     => '男',
+				'create_time'  => '2020-09-11 00:00:44',
+				'user_status' => '1',
+				'suer_id'	  => '5',
+			],
+		];
+		$query =Db::connect('mysql')->name('account');
+		$result=$query ->strict(false)->insertAll($data);
+		return $result;
+	}
+	
+	public function save()
+	{
+		//save()只允许一条数据插入
 		$data=[
 			
-			'user_name' => 'wonderful5',
-			'user_password' => '1234560',
-			'user_time' => '2020-11-11'
+				//'id'		  =>  '5',
+				'user_account' => '123459',
+				'user_name'	   => 'wonderful5',
+				'user_password'=> '1951681585',
+				'user_sex'     => '男',
+				'create_time'  => '2020-09-11 00:00:44',
+				'user_status' => '2',	
 		];
-		/*$userQuery1=Db::connect('mysql')->name('test1');
-		$userQuery2=Db::connect('test2')->name('test2');
+		//save()添加数据如果主键存在则修改 ，否则添加
+		$query=Db::connect('mysql')->name('account');
+		$result =$query -> save($data);
+		return $result;
+	}
+	
+	public function update()
+	{
+		$data=[
+			'id'=>'20',
+			'user_name'=>'beadtiful',
+			'user_sex'=>'男',
+		];
+		$query=Db::connect('mysql')->name('account');
 		
-		$userFind2=$userQuery2->where('id',1)->select();
-		$userQuery2->removeOption('where')->select();
-		$userFind=$userQuery2->select();
-		return Db::connect('test2')->getLastSql();
-		*/
-//		$data=Db::connect('test2')->name('test2')->insert($data);
-//		echo $data;
+		/*//修改数据中存在主键可以省略where语句
+		$result = $query ->update($data);
+		
+		//在修改时执行sql操作函数exp();
+		$result1=$query ->exp('user_name','upper(user_name)')->update();*/
+		
+		//自增，自减
+		$result1=$query->where('id',2)->inc('user_status',2)->update();
+		
+		dump($result1);
 		
 		
-    }
+	}
+	
+	public function raw()
+	{
+		
+		$data=[
+			'user_name'=> Db::raw('upper(user_name)'),
+			'user_status'=>Db::raw('user_status+2'),
+			
+		];
+			$query=Db::connect('mysql')->name('account');
+		$result=$query ->where('id',1)->update($data);
+		return $result;
+	}
+	
+	public function delete()
+	{
+		//单条删除
+		$query=Db::connect('mysql')->name('account');
+		
+		//$result=$query->delete(20);
+		//多条数据删除
+		//$reslut=$query->delete([17,18,19]);
+		
+		//where()删除
+		$result=$query->where('id','>','6')->delete();
+		
+		//删除所有数据
+		//$result=$query->delet(true);
+		return $result;
+	}
+	
+    public function like()
+	{
+		//链接数据可库，实列化数据库对象
+		$query=Db::connect('mysql')->name('account');
+		
+		//模糊查询like();
+		//$result=$query->where('user_name','like','%wonderful%')->select();
+		
+		//like()数组操作
+		//$result=$query->where('user_name','like',['%wonderful%','%beautiful%'],'or')->select();
+		
+		//快捷方式whereLike(),whereNotLike();
+		//$result=$query->whereLike('user_name','%wonderful%')->select();
+		$result=$query->whereNotLike('user_name',['%wonderful%','%beautiful%'],'or')->select();
+		return json($result);
+	}
+	public function between()
+	{
+		//查询两者之间的数据between()
+		$query=Db::connect('mysql')->name('account');
+		
+		//$result=$query->where('id','between',[1,5])->select();
+		//快捷方式whereBetween(),whereNotbetween();
+		//$result=$query->whereBetween('id','2,4')->select();
+		$result=$query->whereNotbetween('id',[2,4])->select();
+		return json($result);
+	}
+	
+	public function inOrNull()
+	{
+		$query=Db::connect('mysql')->name('account');
+		//whereIn();
+		//$result = $query->where('id','in','1,2,3')->select();//not in 
+		//快捷方式whereIn(),whereNotIn()
+		//$result=$query->whereIn('id','1,2')->select();
+		
+		//$result=$query->whereNotIn('id','1,2')->select();
+		
+		//whereNull();
+		//$result=$query->where('user_brithday','null')->select();//not null
+		
+		//快捷方式whereNOtNll(),whereNull();
+		$result=$query->whereNOtNull('user_brithday')->select();
+		return json($result);
+	}
+	public function exp()
+	{
+		//exp()自定义字段后的sql语句
+		$query=Db::connect('mysql')->name('account');
+		//$result=$query->where('id','exp','in(1,2)')->select();
+		//快捷方式
+		$result =$query->whereExp('id','not in(1,2)')->select();
+		dump($result);
+	}
+	
+	public function time()
+	{
+		//whereTime()whereNotBetweenTime()有问题
+		$query=Db::connect('mysql')->name('account');
+		$result1=$query->whereTime('create_time','2020-7-10')->select();
+		$query->removeOption('where')->select();
+		$result= $query ->whereBetweenTime('create_time','2020-7-1','2020-7-14')->select();
+		dump($result);
+	}
 }
