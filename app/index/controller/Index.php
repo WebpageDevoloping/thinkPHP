@@ -262,4 +262,16 @@ class Index extends BaseController
 		$result= $query ->whereBetweenTime('create_time','2020-7-1','2020-7-14')->select();
 		dump($result);
 	}
+	
+	public function transaction()
+	{
+		//数据回滚
+		
+		$result=Db::connect('mysql')->transaction(function(){
+			$query = Db::connect('mysql')->name('account');
+			$query->where('id',1)->save(['user_status'=>Db::raw('user_status -1')]);
+			$query->where('id',2)->save(['user_status'=>Db::raw('user_status +1')]);
+		});
+		return $result;
+	}
 }
